@@ -1,0 +1,13 @@
+.setting {
+  opacity: 0.5;
+  transition: all 0.5s;
+  text-align: left;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .slider {
+
+  }
+}
