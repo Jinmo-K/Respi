@@ -24,6 +24,7 @@ const Indicator = ({ settings }) => {
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [indicatorText, setIndicatorText] = useState('');
+  const [currPhase, setCurrPhase] = useState('inhale');
   const [sessionDuration, setSessionDuration] = useState(0);
   // Refs for clearing intervals
   const intervalI = useRef(null);
@@ -67,6 +68,7 @@ const Indicator = ({ settings }) => {
     setProgE(0);
     setProgI(0);
     setProg(0);
+    setCurrPhase('inhale');
     setCycleCount(0);
     setCurrHoldTime(0);
     setSessionDuration(0);
@@ -111,7 +113,7 @@ const Indicator = ({ settings }) => {
 
     setTimeout(() => {
       setCurrHoldTime(settings.holdTime);
-    }, settings.holdTime)
+    }, settings.holdTime);
 
   }, [settings.holdTime]);
 
@@ -140,7 +142,8 @@ const Indicator = ({ settings }) => {
 
         case 50:
           clearInterval(intervalI.current);
-          if (!isPaused) {
+          if (!isPaused && currPhase === 'inhale') {
+            setCurrPhase('exhale')
             setIsPaused(true);
             setTimeout(() => {
               setIsPaused(false);
@@ -162,15 +165,10 @@ const Indicator = ({ settings }) => {
               setCycleCount(cycleCount + 1);
             }
           }
+          setCurrPhase('inhale')
       }
     } 
-  }, [isActive, prog, cycleCount, settings.pauseTime, startHoldTimer, breathe, isHolding]);
-
-
-  useEffect(() => {
-    // console.log(settings);
-  }, [settings]);
-
+  }, [isActive, prog, cycleCount, settings.pauseTime, startHoldTimer, breathe, isHolding, isPaused, currPhase]);
 
   return (
     <div className="indicator">
