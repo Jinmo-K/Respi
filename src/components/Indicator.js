@@ -16,7 +16,7 @@ const Indicator = ({ settings }) => {
   // Inhale/exhale progress bars
   const [progI, setProgI] = useState(0);  
   const [progE, setProgE] = useState(0);
-
+  // WHM
   const [roundCount, setRoundCount] = useState(0);
   const [cycleCount, setCycleCount] = useState(0);
   const [currHoldTime, setCurrHoldTime] = useState(0);
@@ -156,7 +156,7 @@ const Indicator = ({ settings }) => {
           clearInterval(intervalE.current);
 
           if (!isHolding) {
-            if (cycleCount + 1 === NUM_CYCLES) {
+            if (cycleCount + 1 === NUM_CYCLES && settings.whm) {
               setIsHolding(true);
               startHoldTimer();
             }
@@ -168,7 +168,8 @@ const Indicator = ({ settings }) => {
           setCurrPhase('inhale')
       }
     } 
-  }, [isActive, prog, cycleCount, settings.pauseTime, startHoldTimer, breathe, isHolding, isPaused, currPhase]);
+  }, [isActive, prog, cycleCount, settings.pauseTime, 
+      settings.whm, startHoldTimer, breathe, isHolding, isPaused, currPhase]);
 
   return (
     <div className="indicator">

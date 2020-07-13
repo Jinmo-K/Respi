@@ -3,8 +3,9 @@ import React from 'react';
 const Slider = ({ label, name, onChange, value, min=0, max=10000}) => {
   return (
     <div className='setting'>
-      <div>{label}: </div>
+      <label className="label" htmlFor={name}>{label} </label><br/>
       <input
+        id={name}
         className='slider'
         name={name}
         type='range'
@@ -13,7 +14,7 @@ const Slider = ({ label, name, onChange, value, min=0, max=10000}) => {
         value={value}
         onChange={onChange}
       />
-      <span>{value / 1000} s</span>
+      <div className='duration'>{value / 1000} s</div>
     </div>
   );
 };

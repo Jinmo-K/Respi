@@ -9,6 +9,7 @@ const DEFAULT_PAUSE_TIME = 0;
 const DEFAULT_HOLD_TIME = 0;
 const DEFAULT_NUM_CYCLES = 0;
 const DEFAULT_NUM_ROUNDS = 0;
+const DEFAULT_WHM = false;
 
 const initialState = {
   inhaleTime: DEFAULT_INHALE_TIME,
@@ -17,6 +18,7 @@ const initialState = {
   holdTime: DEFAULT_HOLD_TIME,
   numCycles: DEFAULT_NUM_CYCLES,
   numRounds: DEFAULT_NUM_ROUNDS,
+  whm: DEFAULT_WHM,
 };
 
 export default (state=initialState, action) => {

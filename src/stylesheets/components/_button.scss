@@ -1,3 +1,25 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the button component.
 // -----------------------------------------------------------------------------
+
+.whm-button {
+  transition: all 0.3s;
+  margin-right: 30px;
+  &:hover {
+    cursor: pointer;
+  }
+
+  &-on {
+    opacity: 1;
+    color: white;
+    background-color: $secondary-color;
+  }
+
+  &-off {
+    color: $mid-grey;
+    &:hover {
+      opacity: 60%;
+    }
+    opacity: 50%;
+  }
+}

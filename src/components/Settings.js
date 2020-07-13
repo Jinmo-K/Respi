@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSetting } from '../store/actions/settingActions';
@@ -7,9 +7,13 @@ import Slider from './Slider';
 
 const Settings = ({ updateSetting, settings }) => {
 
-  const onChange = (e) => {
+  const onSliderChange = (e) => {
     let val = parseInt(Math.round(e.target.value / 1000 * 10) * 100);
     updateSetting(e.target.name, val);
+  };
+
+  const onWHMclick = () => {
+    updateSetting('whm', !settings.whm);
   };
 
   return (
@@ -19,7 +23,7 @@ const Settings = ({ updateSetting, settings }) => {
       <Slider 
         label='Inhale duration' 
         name='inhaleTime'
-        onChange={onChange} 
+        onChange={onSliderChange} 
         value={settings.inhaleTime} 
       />
 
@@ -27,7 +31,7 @@ const Settings = ({ updateSetting, settings }) => {
       <Slider 
         label='Exhale duration' 
         name='exhaleTime'
-        onChange={onChange} 
+        onChange={onSliderChange} 
         value={settings.exhaleTime} 
       />
 
@@ -35,33 +39,37 @@ const Settings = ({ updateSetting, settings }) => {
       <Slider 
         label='Pause duration'
         name='pauseTime'
-        onChange={onChange} 
+        onChange={onSliderChange} 
         value={settings.pauseTime} 
       />
 
-      WHM <br/>
+      <button 
+        className={settings.whm ? 'whm-button whm-button-on' : 'whm-button whm-button-off'}
+        onClick={onWHMclick}
+      >
+        WHM 
+      </button>
       {/* Number of breath cycles slider */}
       <Slider 
         label='Breath cycles'
         name='numCycles'
-        onChange={onChange} 
+        onChange={onSliderChange} 
         value={settings.numCycles} 
       />
       {/* Number of rounds slider */}
       <Slider 
         label='Rounds'
         name='numRounds'
-        onChange={onChange} 
+        onChange={onSliderChange} 
         value={settings.numRounds} 
       />
       {/* Hold duration slider */}
       <Slider 
         label='Hold duration'
         name='holdTime'
-        onChange={onChange} 
+        onChange={onSliderChange} 
         value={settings.holdTime} 
       />
-
     </div>
   );
 };
