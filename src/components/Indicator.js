@@ -26,11 +26,13 @@ const Indicator = ({ settings }) => {
   const [indicatorText, setIndicatorText] = useState('');
   const [currPhase, setCurrPhase] = useState('inhale');
   const [sessionDuration, setSessionDuration] = useState(0);
-  // Refs for clearing intervals
+  // Refs for clearing intervals and timeouts
   const intervalI = useRef(null);
   const intervalE = useRef(null);
   const intervalH = useRef(null);
   const intervalS = useRef(null);
+  const timeoutH = useRef(null);
+  const timeoutP = useRef(null);
  
   const setProgs = useMemo(() => ({
     inhale: setProgI,
@@ -74,10 +76,13 @@ const Indicator = ({ settings }) => {
     setSessionDuration(0);
     setIsHolding(false);
     setIsActive(false);
+    setIsPaused(false);
     clearInterval(intervalI.current);
     clearInterval(intervalE.current);
     clearInterval(intervalH.current);
     clearInterval(intervalS.current);
+    clearTimeout(timeoutH.current);
+    clearTimeout(timeoutP.current);
     setIndicatorText('');
   };
 
@@ -95,7 +100,6 @@ const Indicator = ({ settings }) => {
     }, settings[phase + 'Time'] / 100);
     // Update the corresponding interval ref
     intervals[phase].current = id;
-    // interval.current = id;
   }, [intervals, indicatorTexts, setProgs, settings]);
 
   /**
@@ -111,11 +115,13 @@ const Indicator = ({ settings }) => {
     }, 1000);
     intervalH.current = id;
 
-    setTimeout(() => {
+    let t_id = setTimeout(() => {
       setCurrHoldTime(settings.holdTime);
     }, settings.holdTime);
 
-  }, [settings.holdTime]);
+    timeoutH.current = t_id;
+
+  }, [settings.holdTime, timeoutH]);
 
   /**
    * Ends the holding phase 
@@ -145,10 +151,12 @@ const Indicator = ({ settings }) => {
           if (!isPaused && currPhase === 'inhale') {
             setCurrPhase('exhale')
             setIsPaused(true);
-            setTimeout(() => {
+
+            let id = setTimeout(() => {
               setIsPaused(false);
               breathe('exhale');
             }, settings.pauseTime);
+            timeoutP.current = id;
           }
           break;
           
@@ -169,7 +177,7 @@ const Indicator = ({ settings }) => {
       }
     } 
   }, [isActive, prog, cycleCount, settings.pauseTime, 
-      settings.whm, startHoldTimer, breathe, isHolding, isPaused, currPhase]);
+      settings.whm, startHoldTimer, breathe, isHolding, isPaused, currPhase, timeoutP]);
 
   return (
     <div className="indicator">
